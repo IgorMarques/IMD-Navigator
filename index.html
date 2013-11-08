@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>jVectorMap demo</title>
+  <title>IMD Navigator - demo</title>
   <link rel="stylesheet" media="all" href="jquery-jvectormap.css"/>
   <script src="assets/jquery-1.8.2.js"></script>
   <script src="jquery-jvectormap.js"></script>
@@ -58,21 +58,33 @@
             map.removeMarkers([code]);
             map.label.hide();
           },
-
-           series: {
-            regions: [{
-             scale: {
-               gray: '#DBE2EC',
-               blue: '#C1824C'
-             },
-             attribute: 'fill',
-             normalizeFunction: 'polynomial',
-             values: {
-               "block_a": 'gray',
-               "block_b": 'gray',
-             }
-           }]
-         },
+          onRegionClick: function(event, code){
+            console.log('region-click', code);
+          },
+          onRegionSelected: function(event, code, isSelected, selectedRegions){
+          console.log('region-select', code, isSelected, selectedRegions);
+          if (window.localStorage) {
+            window.localStorage.setItem(
+              'jvectormap-selected-regions',
+              JSON.stringify(selectedRegions)
+            );
+          }
+          },
+         series: {
+          regions: [{
+           scale: {
+             gray: '#DBE2EC',
+             blue: '#C1824C'
+           },
+           attribute: 'fill',
+           normalizeFunction: 'polynomial',
+           values: {
+             "block_a": 'gray',
+             "block_b": 'gray',
+           }
+         }]
+       },
+       regionsSelectable: true,
       });
 
       $('#map').bind('');
@@ -80,6 +92,6 @@
   </script>
 </head>
 <body>
-  <div id="map" style="width: 900px; height: 600px"></div>
+  <div id="map", class= map_canvas></div>
 </body>
 </html>
